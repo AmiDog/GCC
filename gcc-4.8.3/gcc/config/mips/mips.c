@@ -3456,10 +3456,17 @@ mips_binary_cost (rtx x, int single_cost, int double_cost, bool speed)
 {
   int cost;
 
+  int mode_size_cost = GET_MODE_SIZE (GET_MODE (x));
+  if (mode_size_cost < 2)
+  {
+    /* Due to unoptimized mode changes, 8bit and 16bit have the same cost. */
+    mode_size_cost = 2;
+  }
+
   if (GET_MODE_SIZE (GET_MODE (x)) == UNITS_PER_WORD * 2)
-    cost = double_cost;
+    cost = double_cost * mode_size_cost;
   else
-    cost = single_cost;
+    cost = single_cost * mode_size_cost;
   return (cost
 	  + set_src_cost (XEXP (x, 0), speed)
 	  + rtx_cost (XEXP (x, 1), GET_CODE (x), 1, speed));

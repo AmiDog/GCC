@@ -360,3 +360,7 @@ Lift restrictions on GOT size
 
 noasmopt
 Driver
+
+mint16
+Target Report Mask(INT16)
+Treat integers as 16-bit.

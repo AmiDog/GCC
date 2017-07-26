@@ -709,6 +709,10 @@
   [(set_attr "type" "multi")
    (set_attr "can_delay" "no")])
 
+;; This mode iterator allows 16-bit, 32-bit and 64-bit GPR patterns to be generated
+;; from the same template.
+(define_mode_iterator GPR16 [HI SI (DI "TARGET_64BIT")])
+
 ;; This mode iterator allows 32-bit and 64-bit GPR patterns to be generated
 ;; from the same template.
 (define_mode_iterator GPR [SI (DI "TARGET_64BIT")])
@@ -782,14 +786,14 @@
 
 ;; In GPR templates, a string like "<d>subu" will expand to "subu" in the
 ;; 32-bit version and "dsubu" in the 64-bit version.
-(define_mode_attr d [(SI "") (DI "d")
+(define_mode_attr d [(HI "h") (SI "") (DI "d")
 		     (QQ "") (HQ "") (SQ "") (DQ "d")
 		     (UQQ "") (UHQ "") (USQ "") (UDQ "d")
 		     (HA "") (SA "") (DA "d")
 		     (UHA "") (USA "") (UDA "d")])
 
 ;; Same as d but upper-case.
-(define_mode_attr D [(SI "") (DI "D")
+(define_mode_attr D [(HI "h") (SI "") (DI "D")
 		     (QQ "") (HQ "") (SQ "") (DQ "D")
 		     (UQQ "") (UHQ "") (USQ "") (UDQ "D")
 		     (HA "") (SA "") (DA "D")
@@ -1113,15 +1117,15 @@
    (set_attr "mode" "<UNITMODE>")])
 
 (define_expand "add<mode>3"
-  [(set (match_operand:GPR 0 "register_operand")
-	(plus:GPR (match_operand:GPR 1 "register_operand")
-		  (match_operand:GPR 2 "arith_operand")))]
+  [(set (match_operand:GPR16 0 "register_operand")
+	(plus:GPR16 (match_operand:GPR16 1 "register_operand")
+		  (match_operand:GPR16 2 "arith_operand")))]
   "")
 
 (define_insn "*add<mode>3"
-  [(set (match_operand:GPR 0 "register_operand" "=d,d")
-	(plus:GPR (match_operand:GPR 1 "register_operand" "d,d")
-		  (match_operand:GPR 2 "arith_operand" "d,Q")))]
+  [(set (match_operand:GPR16 0 "register_operand" "=d,d")
+	(plus:GPR16 (match_operand:GPR16 1 "register_operand" "d,d")
+		  (match_operand:GPR16 2 "arith_operand" "d,Q")))]
   "!TARGET_MIPS16"
   "@
     <d>addu\t%0,%1,%2
