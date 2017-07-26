@@ -1,0 +1,10 @@
+
+	mkdir builddir
+
+	cd builddir/
+
+	../gcc-4.8.3/configure --enable-languages=c --disable-libada --disable-libssp --prefix=/usr/local/halfmips --target=mipsel-unknown-elf --program-prefix=halfmips- --with-float=soft
+
+	make
+
+	make install
