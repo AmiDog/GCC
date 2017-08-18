@@ -711,7 +711,7 @@
 
 ;; This mode iterator allows 16-bit, 32-bit and 64-bit GPR patterns to be generated
 ;; from the same template.
-(define_mode_iterator GPR16 [HI SI (DI "TARGET_64BIT")])
+(define_mode_iterator GPR16 [(HI "TARGET_HALFMIPS") SI (DI "TARGET_64BIT")])
 
 ;; This mode iterator allows 32-bit and 64-bit GPR patterns to be generated
 ;; from the same template.

@@ -363,4 +363,8 @@ Driver
 
 mint16
 Target Report Mask(INT16)
-Treat integers as 16-bit.
+Treat integers as 16-bit
+
+mhalfmips
+Target Report Mask(HALFMIPS)
+Generate HALFMIPS code
