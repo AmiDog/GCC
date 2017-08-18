@@ -2753,10 +2753,10 @@ while (0)
 #endif
 
 #undef SIZE_TYPE
-#define SIZE_TYPE (POINTER_SIZE == 64 ? "long unsigned int" : "unsigned int")
+#define SIZE_TYPE (POINTER_SIZE == 64 ? "long unsigned int" : INT_TYPE_SIZE == 16 ? "unsigned long" : "unsigned int")
 
 #undef PTRDIFF_TYPE
-#define PTRDIFF_TYPE (POINTER_SIZE == 64 ? "long int" : "int")
+#define PTRDIFF_TYPE (POINTER_SIZE == 64 ? "long int" : INT_TYPE_SIZE == 16 ? "long" : "int")
 
 /* The maximum number of bytes that can be copied by one iteration of
    a movmemsi loop; see mips_block_move_loop.  */
