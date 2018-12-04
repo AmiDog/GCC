@@ -1375,13 +1375,13 @@ struct mips_cpu_info {
 
 /* Every structure's size must be a multiple of this.  */
 /* 8 is observed right on a DECstation and on riscos 4.02.  */
-#define STRUCTURE_SIZE_BOUNDARY 8
+#define STRUCTURE_SIZE_BOUNDARY (TARGET_ALIGN_INT ? 4 : 8)
 
 /* There is no point aligning anything to a rounder boundary than this.  */
-#define BIGGEST_ALIGNMENT LONG_DOUBLE_TYPE_SIZE
+#define BIGGEST_ALIGNMENT (TARGET_ALIGN_INT ? 32 : LONG_DOUBLE_TYPE_SIZE)
 
 /* All accesses must be aligned.  */
-#define STRICT_ALIGNMENT 1
+#define STRICT_ALIGNMENT (TARGET_STRICT_ALIGNMENT)
 
 /* Define this if you wish to imitate the way many other C compilers
    handle alignment of bitfields and the structures that contain
