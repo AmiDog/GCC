@@ -475,3 +475,19 @@ Use Loongson EXTension (EXT) instructions.
 mloongson-ext2
 Target Report Var(TARGET_LOONGSON_EXT2)
 Use Loongson EXTension R2 (EXT2) instructions.
+
+malign-int
+Target Report Mask(ALIGN_INT) Var(halfmips_flags)
+Align variables on a 32-bit boundary
+
+mrelaxed-align
+Target Report Mask(RELAXED_ALIGNMENT) Var(halfmips_flags)
+Allow unaligned memory references
+
+mint16
+Target Report Mask(INT16) Var(halfmips_flags)
+Treat integers as 16-bit
+
+mhalfmips
+Target Report Mask(HALFMIPS) Var(halfmips_flags)
+Generate HALFMIPS code

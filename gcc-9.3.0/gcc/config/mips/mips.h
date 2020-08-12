@@ -1615,7 +1615,7 @@ FP_ASM_SPEC "\
 
 /* Set the sizes of the core types.  */
 #define SHORT_TYPE_SIZE 16
-#define INT_TYPE_SIZE 32
+#define INT_TYPE_SIZE (TARGET_INT16 ? 16 : 32)
 #define LONG_TYPE_SIZE (TARGET_LONG64 ? 64 : 32)
 #define LONG_LONG_TYPE_SIZE 64
 
@@ -1656,16 +1656,16 @@ FP_ASM_SPEC "\
 
 /* Every structure's size must be a multiple of this.  */
 /* 8 is observed right on a DECstation and on riscos 4.02.  */
-#define STRUCTURE_SIZE_BOUNDARY 8
+#define STRUCTURE_SIZE_BOUNDARY (TARGET_ALIGN_INT ? 4 : 8)
 
 /* There is no point aligning anything to a rounder boundary than
    LONG_DOUBLE_TYPE_SIZE, unless under MSA the bigggest alignment is
    BITS_PER_MSA_REG.  */
 #define BIGGEST_ALIGNMENT \
-  (ISA_HAS_MSA ? BITS_PER_MSA_REG : LONG_DOUBLE_TYPE_SIZE)
+  (ISA_HAS_MSA ? BITS_PER_MSA_REG : (TARGET_ALIGN_INT ? 32 : LONG_DOUBLE_TYPE_SIZE))
 
 /* All accesses must be aligned.  */
-#define STRICT_ALIGNMENT 1
+#define STRICT_ALIGNMENT (TARGET_RELAXED_ALIGNMENT ? 0 : 1)
 
 /* Define this if you wish to imitate the way many other C compilers
    handle alignment of bitfields and the structures that contain
@@ -3090,10 +3090,10 @@ while (0)
 #endif
 
 #undef SIZE_TYPE
-#define SIZE_TYPE (POINTER_SIZE == 64 ? "long unsigned int" : "unsigned int")
+#define SIZE_TYPE (POINTER_SIZE == 64 ? "long unsigned int" : INT_TYPE_SIZE == 16 ? "long unsigned int" : "unsigned int")
 
 #undef PTRDIFF_TYPE
-#define PTRDIFF_TYPE (POINTER_SIZE == 64 ? "long int" : "int")
+#define PTRDIFF_TYPE (POINTER_SIZE == 64 ? "long int" : INT_TYPE_SIZE == 16 ? "long int" : "int")
 
 /* The minimum alignment of any expanded block move.  */
 #define MIPS_MIN_MOVE_MEM_ALIGN 16
