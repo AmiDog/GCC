@@ -1487,9 +1487,9 @@
    (set_attr "mode" "<UNITMODE>")])
 
 (define_insn "sub<mode>3"
-  [(set (match_operand:GPR 0 "register_operand" "=!u,d")
-	(minus:GPR (match_operand:GPR 1 "register_operand" "!u,d")
-		   (match_operand:GPR 2 "register_operand" "!u,d")))]
+  [(set (match_operand:GPR16 0 "register_operand" "=!u,d")
+	(minus:GPR16 (match_operand:GPR16 1 "register_operand" "!u,d")
+		   (match_operand:GPR16 2 "register_operand" "!u,d")))]
   ""
   "<d>subu\t%0,%1,%2"
   [(set_attr "alu_type" "sub")
@@ -3264,9 +3264,9 @@
 ;; want to use a different set of constraints when TARGET_MIPS16.
 
 (define_expand "and<mode>3"
-  [(set (match_operand:GPR 0 "register_operand")
-	(and:GPR (match_operand:GPR 1 "register_operand")
-		 (match_operand:GPR 2 "and_reg_operand")))])
+  [(set (match_operand:GPR16 0 "register_operand")
+	(and:GPR16 (match_operand:GPR16 1 "register_operand")
+		 (match_operand:GPR16 2 "and_reg_operand")))])
 
 ;; The middle-end is not allowed to convert ANDing with 0xffff_ffff into a
 ;; zero_extendsidi2 because of TARGET_TRULY_NOOP_TRUNCATION, so handle these
@@ -3290,9 +3290,9 @@
 ;;  register =op1                      x
 
 (define_insn "*and<mode>3"
-  [(set (match_operand:GPR 0 "register_operand" "=d,d,d,!u,d,d,d,!u,d")
-	(and:GPR (match_operand:GPR 1 "nonimmediate_operand" "o,o,W,!u,d,d,d,0,d")
-		 (match_operand:GPR 2 "and_operand" "Yb,Yh,Yw,Uean,K,Yx,Yw,!u,d")))]
+  [(set (match_operand:GPR16 0 "register_operand" "=d,d,d,!u,d,d,d,!u,d")
+	(and:GPR16 (match_operand:GPR16 1 "nonimmediate_operand" "o,o,W,!u,d,d,d,0,d")
+		 (match_operand:GPR16 2 "and_operand" "Yb,Yh,Yw,Uean,K,Yx,Yw,!u,d")))]
   "!TARGET_MIPS16 && and_operands_ok (<MODE>mode, operands[1], operands[2])"
 {
   int len;
@@ -3310,7 +3310,7 @@
       return "lwu\t%0,%1";
     case 3:
     case 4:
-      return "andi\t%0,%1,%x2";
+      return "<d>andi\t%0,%1,%x2";
     case 5:
       len = low_bitmask_len (<MODE>mode, INTVAL (operands[2]));
       operands[2] = GEN_INT (len);
@@ -3319,7 +3319,7 @@
       return "#";
     case 7:
     case 8:
-      return "and\t%0,%1,%2";
+      return "<d>and\t%0,%1,%2";
     default:
       gcc_unreachable ();
     }
@@ -3357,9 +3357,9 @@
    (set_attr "mode" "<MODE>")])
 
 (define_expand "ior<mode>3"
-  [(set (match_operand:GPR 0 "register_operand")
-	(ior:GPR (match_operand:GPR 1 "register_operand")
-		 (match_operand:GPR 2 "uns_arith_operand")))]
+  [(set (match_operand:GPR16 0 "register_operand")
+	(ior:GPR16 (match_operand:GPR16 1 "register_operand")
+		 (match_operand:GPR16 2 "uns_arith_operand")))]
   ""
 {
   if (TARGET_MIPS16)
@@ -3367,14 +3367,14 @@
 })
 
 (define_insn "*ior<mode>3"
-  [(set (match_operand:GPR 0 "register_operand" "=!u,d,d")
-	(ior:GPR (match_operand:GPR 1 "register_operand" "%0,d,d")
-		 (match_operand:GPR 2 "uns_arith_operand" "!u,d,K")))]
+  [(set (match_operand:GPR16 0 "register_operand" "=!u,d,d")
+	(ior:GPR16 (match_operand:GPR16 1 "register_operand" "%0,d,d")
+		 (match_operand:GPR16 2 "uns_arith_operand" "!u,d,K")))]
   "!TARGET_MIPS16"
   "@
-   or\t%0,%1,%2
-   or\t%0,%1,%2
-   ori\t%0,%1,%x2"
+   <d>or\t%0,%1,%2
+   <d>or\t%0,%1,%2
+   <d>ori\t%0,%1,%x2"
   [(set_attr "alu_type" "or")
    (set_attr "compression" "micromips,*,*")
    (set_attr "mode" "<MODE>")])
@@ -3389,21 +3389,21 @@
    (set_attr "mode" "<MODE>")])
 
 (define_expand "xor<mode>3"
-  [(set (match_operand:GPR 0 "register_operand")
-	(xor:GPR (match_operand:GPR 1 "register_operand")
-		 (match_operand:GPR 2 "uns_arith_operand")))]
+  [(set (match_operand:GPR16 0 "register_operand")
+	(xor:GPR16 (match_operand:GPR16 1 "register_operand")
+		 (match_operand:GPR16 2 "uns_arith_operand")))]
   ""
   "")
 
 (define_insn "*xor<mode>3"
-  [(set (match_operand:GPR 0 "register_operand" "=!u,d,d")
-	(xor:GPR (match_operand:GPR 1 "register_operand" "%0,d,d")
-		 (match_operand:GPR 2 "uns_arith_operand" "!u,d,K")))]
+  [(set (match_operand:GPR16 0 "register_operand" "=!u,d,d")
+	(xor:GPR16 (match_operand:GPR16 1 "register_operand" "%0,d,d")
+		 (match_operand:GPR16 2 "uns_arith_operand" "!u,d,K")))]
   "!TARGET_MIPS16"
   "@
-   xor\t%0,%1,%2
-   xor\t%0,%1,%2
-   xori\t%0,%1,%x2"
+   <d>xor\t%0,%1,%2
+   <d>xor\t%0,%1,%2
+   <d>xori\t%0,%1,%x2"
   [(set_attr "alu_type" "xor")
    (set_attr "compression" "micromips,*,*")
    (set_attr "mode" "<MODE>")])
