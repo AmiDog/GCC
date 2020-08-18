@@ -3,6 +3,7 @@
 	make 4.3
 	bison 3.0.4
 	texinfo 6.7 (makeinfo)
+	flex 2.6.4
 	libgmp-devel 6.2.0
 	libmpfr-devel 4.1.0
 	libmpc-devel 1.1.0
