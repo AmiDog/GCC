@@ -8,6 +8,8 @@
 
 	../gcc-9.3.0/configure --enable-languages=c --disable-libada --disable-libssp --prefix=/usr/local/mipsel --target=mipsel-unknown-elf --with-float=soft
 
+	../gcc-11.4.0/configure --enable-languages=c --disable-libada --disable-libssp --prefix=/usr/local/mipsel --target=mipsel-unknown-elf --with-float=soft
+
 	make
 
 	make install
